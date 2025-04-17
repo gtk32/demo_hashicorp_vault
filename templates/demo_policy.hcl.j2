@@ -1,0 +1,24 @@
+path "auth/xforcers/*" {
+    capabilities = [ "read", "list" ]
+}
+
+path "sys/policies/*" {
+    capabilities = [ "read", "list" ]
+}
+
+path "sys/policy/*" {
+    capabilities = [ "read", "list" ]
+}
+
+path "sys/auth/*" {
+  capabilities = [ "read", "list" ]
+}
+
+path "auth/token/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+
+path "secret_storage/data/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+

@@ -1,0 +1,25 @@
+---
+- name: Login with token
+  hosts: fedora2
+  vars_files:
+    - vault_secrets.yml
+  vars:
+    vault_auth_method: token
+    vault_address: https://192.168.122.221:8200
+  tasks:
+    - name: Install python dependencies
+      ansible.builtin.dnf:
+        name: python3-hvac
+        state: present
+    - name: Vault authentication
+      community.hashi_vault.vault_login:
+        url: "{{ vault_address }}"
+        auth_method: "{{ vault_auth_method }}"
+        token: "{{ vault_root_token }}" 
+        validate_certs: false
+      register: auth_result
+    - name: Show vaul status
+      ansible.builtin.debug:
+        var: auth_result
+
+# https://developer.hashicorp.com/vault/api-docs/system/seal-status

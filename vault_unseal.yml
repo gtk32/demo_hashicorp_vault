@@ -1,0 +1,28 @@
+---
+- name: Unseal vault
+  hosts: fedora2
+  vars_files:
+    - vault_secrets.yml
+  vars:
+    vault_host: 192.168.122.221
+  tasks:
+    - name: Unseal the vault
+      ansible.builtin.uri:
+        url: "https://{{ vault_host }}:8200/v1/sys/unseal"
+        method: POST
+        body_format: json
+        body:
+          key: "{{ vault_unseal_key }}"
+        status_code: 200
+        return_content: true
+        validate_certs: false
+      register: seal_report
+    - name: Show the vault response
+      ansible.builtin.debug:
+        var: seal_report.json
+
+# Are a pre-requisite you have to initialize the vault first. You
+# can do this via the GUI or by using the following command:
+# vault operator init -key-shares=1 -key-threshold=1
+
+# https://developer.hashicorp.com/vault/api-docs/system/unseal
